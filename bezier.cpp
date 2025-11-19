@@ -108,8 +108,11 @@ vector2 sextic_bezier(float time, vector2 anchor_0, vector2 anchor_1, vector2 an
 }
 
 int main(void){
+	cout << "precision (must be int, recommended to be 100): ";
+	cin >> precision;
+	cout << "point values must be float or int, formatted x \\n y\n-----";
 	for(int i = 0; i < (sizeof(a)/sizeof(a[0])); i++){
-		cout << "\n" << "point " << i << "\n";
+		cout << "\n" << "point " << i << ":\n";
 		cin >> a[i].x;
 		cin >> a[i].y;
 		cout << "-----";
