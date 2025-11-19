@@ -4,6 +4,7 @@ using namespace std;
 
 int precision = 100;
 int degree = 1;
+float extpl = 1.0;
 
 struct vector2{
 	float x;
@@ -121,7 +122,10 @@ int main(void){
 	cout << "precision (must be int, recommended to be 100): ";
 	cin >> precision;
 
-	cout << "point values must be float or int, formatted x \\n y\n-----";
+	cout << "amount of extrapolation (how far it stretches past the curve, float, default 1): ";
+	cin >> extpl;
+
+	cout << "-----\npoint values must be float or int, formatted x \\n y\n-----";
 	for(int i = 0; i < degree; i++){
 		cout << "\n" << "point " << i << ":\n";
 		cin >> a[i].x;
@@ -131,7 +135,7 @@ int main(void){
 
 	cout << "----------\n";
 	
-	for(int i = 0; i <= precision; i++){
+	for(int i = -(extpl - 1) * precision; i <= extpl * precision; i++){
 		float time = inverse_lerp(i, 0, precision);
 		vector2 point = vector2(0, 0);
 
