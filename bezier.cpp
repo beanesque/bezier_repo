@@ -3,6 +3,7 @@
 using namespace std;
 
 int precision = 100;
+int degree = 1;
 
 struct vector2{
 	float x;
@@ -108,10 +109,20 @@ vector2 sextic_bezier(float time, vector2 anchor_0, vector2 anchor_1, vector2 an
 }
 
 int main(void){
+
+	cout << "no. of anchors (int from 1 to " << sizeof(a)/sizeof(a[0]) << "): ";
+	cin >> degree;
+	if(degree > sizeof(a)/sizeof(a[0])){
+		degree = sizeof(a)/sizeof(a[0]);
+	}else if(degree < 1){
+		degree = 1;
+	}
+
 	cout << "precision (must be int, recommended to be 100): ";
 	cin >> precision;
+
 	cout << "point values must be float or int, formatted x \\n y\n-----";
-	for(int i = 0; i < (sizeof(a)/sizeof(a[0])); i++){
+	for(int i = 0; i < degree; i++){
 		cout << "\n" << "point " << i << ":\n";
 		cin >> a[i].x;
 		cin >> a[i].y;
@@ -119,11 +130,37 @@ int main(void){
 	}
 
 	cout << "----------\n";
-
+	
 	for(int i = 0; i <= precision; i++){
 		float time = inverse_lerp(i, 0, precision);
 		vector2 point = vector2(0, 0);
-		point = sextic_bezier(time, a[0], a[1], a[2], a[3], a[4], a[5], a[6]);
+
+		switch(degree){
+			case 1:
+				point = a[0];
+				break;
+			case 2:
+				point = lerpv(time, a[0], a[1]);
+				break;
+			case 3:
+				point = bezier(time, a[0], a[1], a[2]);
+				break;
+			case 4:
+				point = cubic_bezier(time, a[0], a[1], a[2], a[3]);
+				break;
+			case 5:
+				point = quartic_bezier(time, a[0], a[1], a[2], a[3], a[4]);
+				break;
+			case 6:
+				point = quintic_bezier(time, a[0], a[1], a[2], a[3], a[4], a[5]);
+				break;
+			case 7:
+				point = sextic_bezier(time, a[0], a[1], a[2], a[3], a[4], a[5], a[6]);
+				break;
+			default:
+				break;
+		}
+
 		cout << point.as_str() << "\n";
 	}
 	return 1;
