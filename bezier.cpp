@@ -1,5 +1,5 @@
 #include <iostream>
-//#include <fstream>
+#include <fstream>
 
 using namespace std;
 
@@ -120,9 +120,29 @@ vec2 septic_bezier(float time, vec2 anchor_0, vec2 anchor_1, vec2 anchor_2, vec2
 }
 
 
-int main(void){
-	//ofstream output;
-	//output.open("bezier_points.txt");
+int main(int argc, char* argv[]){
+	bool show_anchors, into_file;
+	into_file = false;
+	show_anchors = false;
+
+	ofstream output;
+	output.open("bezier_points.txt");
+
+	for(unsigned int i = 1; i < argc; i++){
+		if(argv[i] == "-show-anchors"sv){
+			show_anchors = true;
+		}else if(argv[i] == "-file"sv){
+			into_file = true;
+		}else{
+			cout << "unrecognized parameter: " << argv[i] << "\nhelp: \n-show-anchors - gives anchor points with output\n-file - puts output into a text file rather than the terminal\n";
+			return 0;
+		}
+		if(i > 2){
+			cout << "too many parameters\n";
+			return 0;
+		}
+	}
+
 
 	cout << "degree (int from 0 to " << sizeof(a)/sizeof(a[0]) - 1 << "): ";
 	cin >> degree;
@@ -190,10 +210,26 @@ int main(void){
 				break;
 		}
 
-	//	output << point.as_str() << "\n";
-		cout << point.as_str() << "\n";
+		if(into_file == true){
+			output << point.as_str() << "\n";
+		}else{
+			cout << point.as_str() << "\n";
+		}
 
 	}
-//	output.close();
-	return 1;
+
+	if(show_anchors == true){
+		cout << "\n";
+		for(unsigned int i = 0; i <= degree; i++){
+			if(into_file == true){
+				output << a[i].as_str() << "\n";
+			}else{
+				cout << a[i].as_str() << "\n";
+			}
+		}
+	}
+
+	output.close();
+	
+	return 0;
 }
