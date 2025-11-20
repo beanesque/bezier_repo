@@ -1,4 +1,5 @@
 #include <iostream>
+//#include <fstream>
 
 using namespace std;
 
@@ -120,6 +121,8 @@ vec2 septic_bezier(float time, vec2 anchor_0, vec2 anchor_1, vec2 anchor_2, vec2
 
 
 int main(void){
+	//ofstream output;
+	//output.open("bezier_points.txt");
 
 	cout << "degree (int from 0 to " << sizeof(a)/sizeof(a[0]) - 1 << "): ";
 	cin >> degree;
@@ -187,7 +190,10 @@ int main(void){
 				break;
 		}
 
+	//	output << point.as_str() << "\n";
 		cout << point.as_str() << "\n";
+
 	}
+//	output.close();
 	return 1;
 }
