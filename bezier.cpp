@@ -121,27 +121,28 @@ vec2 septic_bezier(float time, vec2 anchor_0, vec2 anchor_1, vec2 anchor_2, vec2
 
 
 int main(int argc, char* argv[]){
+	string file_name = "bezier_points.txt";
 	bool show_anchors, into_file;
 	into_file = false;
 	show_anchors = false;
 
 	ofstream output;
-	output.open("bezier_points.txt");
 
 	for(unsigned int i = 1; i < argc; i++){
 		if(argv[i] == "-show-anchors"sv){
 			show_anchors = true;
 		}else if(argv[i] == "-file"sv){
 			into_file = true;
-		}else{
-			cout << "unrecognized parameter: " << argv[i] << "\nhelp: \n-show-anchors - gives anchor points with output\n-file - puts output into a text file rather than the terminal\n";
-			return 0;
+			file_name = argv[i + 1];
+
 		}
-		if(i > 2){
+		if(i > 3){
 			cout << "too many parameters\n";
 			return 0;
 		}
 	}
+
+	output.open(file_name);
 
 
 	cout << "degree (int from 0 to " << sizeof(a)/sizeof(a[0]) - 1 << "): ";
@@ -169,7 +170,7 @@ int main(int argc, char* argv[]){
 	cin >> a[degree].y;
 
 	for(int i = 1; i < degree; i++){
-		cout << "\n" << "point " << i << ":\n";
+		cout << "\n" << "anchor " << i << ":\n";
 		cin >> a[i].x;
 		cin >> a[i].y;
 		cout << "-----";
