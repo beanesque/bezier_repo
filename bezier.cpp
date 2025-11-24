@@ -1,11 +1,14 @@
 #include <iostream>
 #include <fstream>
+#include <cmath>
 
 using namespace std;
 
 int precision = 100;
 int degree = 1;
 float extpl = 1.0;
+
+bool screen[50][50];
 
 struct vec2{
 	float x, y;
@@ -119,13 +122,30 @@ vec2 septic_bezier(float time, vec2 anchor_0, vec2 anchor_1, vec2 anchor_2, vec2
 	return out;
 }
 
+void render_point(vec2 point, float scale){
+	if(point.x < (sizeof(screen)/sizeof(screen[0])) * scale && point.y < (sizeof(screen)/sizeof(screen[0]) * scale)){
+		screen[static_cast<int>(round(point.y)/scale)][static_cast<int>(round(point.x)/scale)] = true;
+	}
+	return;
+}
+
+void prt_scr(void){
+	for(unsigned int i = 0; i < sizeof(screen)/sizeof(screen[0]); i++){
+		for(unsigned int j = 0; j < sizeof(screen[i])/sizeof(screen[i][0]); j++){
+			if(screen[i][j] == true){
+				cout << " o ";
+			}else{
+				cout << "   ";
+			}
+		}
+		cout << "\n";
+	}
+}
 
 int main(int argc, char* argv[]){
 	string file_name = "bezier_points.txt";
-	bool show_anchors, into_file;
-	into_file = false;
-	show_anchors = false;
-
+	bool show_anchors, into_file, graph = false;
+	
 	ofstream output;
 
 	for(unsigned int i = 1; i < argc; i++){
@@ -134,15 +154,15 @@ int main(int argc, char* argv[]){
 		}else if(argv[i] == "-file"sv){
 			into_file = true;
 			file_name = argv[i + 1];
-
+			output.open(file_name);
+		}else if(argv[i] == "-graph"sv){
+			graph = true;
 		}
-		if(i > 3){
+		if(i > 4){
 			cout << "too many parameters\n";
 			return 0;
 		}
 	}
-
-	output.open(file_name);
 
 
 	cout << "degree (int from 0 to " << sizeof(a)/sizeof(a[0]) - 1 << "): ";
@@ -216,6 +236,9 @@ int main(int argc, char* argv[]){
 		}else{
 			cout << point.as_str() << "\n";
 		}
+		if(graph == true){
+			render_point(point, 5);
+		}
 
 	}
 
@@ -227,9 +250,14 @@ int main(int argc, char* argv[]){
 			}else{
 				cout << a[i].as_str() << "\n";
 			}
+			if(graph == true){
+				render_point(a[i], 5);
+			}
 		}
 	}
-
+	if(graph == true){
+		prt_scr();
+	}
 	output.close();
 	
 	return 0;
