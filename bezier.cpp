@@ -124,16 +124,30 @@ vec2 septic_bezier(float time, vec2 anchor_0, vec2 anchor_1, vec2 anchor_2, vec2
 
 void render_point(vec2 point, float scale){
 	if(point.x < (sizeof(screen)/sizeof(screen[0])) * scale && point.y < (sizeof(screen)/sizeof(screen[0]) * scale)){
-		screen[static_cast<int>(round(point.y)/scale)][static_cast<int>(round(point.x)/scale)] = true;
+		screen[static_cast<int>(round(point.x)/scale)][static_cast<int>(round(point.y)/scale)] = true;
 	}
 	return;
 }
 
 void prt_scr(void){
+	cout << " ";
+	for(unsigned int j = 0; j < sizeof(screen[0])/sizeof(screen[0][0]); j++){
+		if(j < 10){
+			cout << " 0" << j;
+		}else{
+			cout << " " << j;
+		}
+	}
+	cout << "\n";
 	for(unsigned int i = 0; i < sizeof(screen)/sizeof(screen[0]); i++){
+		if(i < 10){
+			cout << "0" << i;
+		}else{
+			cout << i;
+		}
 		for(unsigned int j = 0; j < sizeof(screen[i])/sizeof(screen[i][0]); j++){
-			if(screen[i][j] == true){
-				cout << " o ";
+			if(screen[j][i] == true){
+				cout << " X ";
 			}else{
 				cout << "   ";
 			}
@@ -233,7 +247,7 @@ int main(int argc, char* argv[]){
 
 		if(into_file == true){
 			output << point.as_str() << "\n";
-		}else{
+		}else if(graph == false){
 			cout << point.as_str() << "\n";
 		}
 		if(graph == true){
