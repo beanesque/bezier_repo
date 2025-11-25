@@ -124,32 +124,39 @@ vec2 septic_bezier(float time, vec2 anchor_0, vec2 anchor_1, vec2 anchor_2, vec2
 
 void render_point(vec2 point, float scale){
 	if(point.x < (sizeof(screen)/sizeof(screen[0])) * scale && point.y < (sizeof(screen)/sizeof(screen[0]) * scale)){
-		screen[static_cast<int>(round(point.x)/scale)][static_cast<int>(round(point.y)/scale)] = true;
+		if(point.x > 0 && point.y > 0){
+				screen[static_cast<int>(round(point.x)/scale)][static_cast<int>(round(point.y)/scale)] = true;
+		}
+
 	}
 	return;
 }
 
-void prt_scr(void){
-	cout << " ";
+void prt_scr(float scale){
+	cout << "  ";
 	for(unsigned int j = 0; j < sizeof(screen[0])/sizeof(screen[0][0]); j++){
-		if(j < 10){
-			cout << " 0" << j;
+		if(j * scale < 10){
+			cout << " 00" << j * scale;
+		}else if(j * scale < 100){
+			cout << " 0" << j * scale;
 		}else{
-			cout << " " << j;
+			cout << " " << j * scale;
 		}
 	}
 	cout << "\n";
-	for(unsigned int i = 0; i < sizeof(screen)/sizeof(screen[0]); i++){
-		if(i < 10){
-			cout << "0" << i;
+	for(int i = sizeof(screen)/sizeof(screen[0]) - 1; i > -1; i--){
+		if(i * scale < 10){
+			cout << "00" << i * scale;
+		}else if(i * scale < 100){
+			cout << "0" << i * scale;
 		}else{
-			cout << i;
+			cout << i * scale;
 		}
 		for(unsigned int j = 0; j < sizeof(screen[i])/sizeof(screen[i][0]); j++){
 			if(screen[j][i] == true){
-				cout << " X ";
+				cout << "  X ";
 			}else{
-				cout << "   ";
+				cout << "    ";
 			}
 		}
 		cout << "\n";
@@ -270,7 +277,7 @@ int main(int argc, char* argv[]){
 		}
 	}
 	if(graph == true){
-		prt_scr();
+		prt_scr(5);
 	}
 	output.close();
 	
